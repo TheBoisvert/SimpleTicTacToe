@@ -2,7 +2,7 @@
 # Main state of the board
 board = [[" ", " ", " "], [" ", " ", " "], [" ", " ", " "]]
 # Indicates which player is to play next
-turn = "X"
+turn = "1"
 
 
 def main():
@@ -12,7 +12,7 @@ def main():
 
     if start_play not in expected:
         print("This is not a valid choice!")
-        start()
+        main()
     else:
         if start_play == "Y":
             display_board()
@@ -23,6 +23,9 @@ def main():
 
 def display_board():
     # Displays the Tic Tac Toe board in it's current state
+
+    print("\n" * 100)
+
     line = ""
 
     for i in range(len(board)):
@@ -43,35 +46,48 @@ def display_board():
 
 def take_turn():
     # Asks the current player where he wants to play his move, places the move on the board, then refreshes the board
+
     global turn
-    move_line = "WRONG"
-    move_column = "WRONG"
-    expected = ["0", "1", "2"]
+    move_legal = True
+    move_line = None
+    move_column = None
+    expected = ["1", "2", "3"]
 
-    while move_line not in expected:
-        move_line = input("Player {}, please choose the line in which you want to play your move "
-                          "(0, 1, 2) : ".format(turn))
+    while move_legal:
+        while move_line not in expected:
+            move_line = input("Player {}, please choose the line in which you want to play your move "
+                              "(1 / 2 / 3) : ".format(turn))
 
-        if move_line not in expected:
-            print("This is not a valid choice!")
-    move_line = int(move_line)
+            if move_line not in expected:
+                print("This is not a valid choice!")
+        move_line = int(move_line)
 
-    while move_column not in expected :
-        move_column = input("Good! Now, please choose the column in which you want to play your move (0, 1, 2) : ")
+        while move_column not in expected :
+            move_column = input("Good! Now, please choose the column in which you want to play your move (1 / 2 / 3) : ")
 
-        if move_column not in expected:
-            print("This is not a valid choice!")
-    move_column = int(move_column)
+            if move_column not in expected:
+                print("This is not a valid choice!")
+        move_column = int(move_column)
 
-    board[move_line][move_column] = "{}".format(turn)
+        if board[move_line - 1][move_column - 1] != " ":
+            print("You cannot play a move in a square that's already used!")
+            continue
+        else :
+            break
+
+    if turn == "1":
+        board[move_line - 1][move_column - 1] = "X"
+    else:
+        board[move_line - 1][move_column - 1] = "O"
 
     check_win()
+    check_tie()
     display_board()
 
-    if turn == "X":
-        turn = "O"
+    if turn == "1":
+        turn = "2"
     else:
-        turn = "X"
+        turn = "1"
     take_turn()
 
 
@@ -79,27 +95,29 @@ def check_win():
     # Checks if there's a horizontal win
     for i in range(len(board)):
         if board[i][0] == "X" and board[i][1] == "X" and board[i][2] == "X":
-            win("X")
+            win("1")
         if board[i][0] == "O" and board[i][1] == "O" and board[i][2] == "O":
-            win("O")
+            win("2")
 
     # Checks if there's a vertical win
     for i in range(len(board)):
         if board[0][i] == "X" and board[1][i] == "X" and board[2][i] == "X":
-            win("X")
+            win("1")
         if board[0][i] == "O" and board[1][i] == "O" and board[2][i] == "O":
-            win("O")
+            win("2")
 
     # Checks if there's a horizontal win
     if board[0][0] == "X" and board[1][1] == "X" and board[2][2] == "X":
-        win("X")
+        win("1")
     if board[0][2] == "X" and board[1][1] == "X" and board[2][0] == "X":
-        win("X")
+        win("1")
     if board[0][0] == "O" and board[1][1] == "O" and board[2][2] == "O":
-        win("O")
+        win("2")
     if board[0][2] == "O" and board[1][1] == "O" and board[2][0] == "O":
-        win("O")
+        win("2")
 
+
+def check_tie():
     # Checks if the game if is a tie
     istie = True
     for i in range(len(board)):
@@ -112,11 +130,13 @@ def check_win():
 
 
 def win(winning_player):
+    display_board()
     print("Player {} has won!".format(turn))
     new_game()
 
 
 def tie():
+    display_board()
     print("The game is a tie!")
     new_game()
 
@@ -136,8 +156,6 @@ def new_game():
             take_turn()
         else:
             exit()
-
-
 
 
 if __name__ == "__main__":
