@@ -14,7 +14,7 @@ def main():
         print("This is not a valid choice!")
         main()
     else:
-        if start_play == "Y":
+        if start_play == "Y" or start_play == "y":
             display_board()
             take_turn()
         else:
@@ -62,8 +62,9 @@ def take_turn():
                 print("This is not a valid choice!")
         move_line = int(move_line)
 
-        while move_column not in expected :
-            move_column = input("Good! Now, please choose the column in which you want to play your move (1 / 2 / 3) : ")
+        while move_column not in expected:
+            move_column = input(
+                "Good! Now, please choose the column in which you want to play your move (1 / 2 / 3) : ")
 
             if move_column not in expected:
                 print("This is not a valid choice!")
@@ -72,7 +73,7 @@ def take_turn():
         if board[move_line - 1][move_column - 1] != " ":
             print("You cannot play a move in a square that's already used!")
             continue
-        else :
+        else:
             break
 
     if turn == "1":
