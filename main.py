@@ -14,7 +14,7 @@ def main():
         print("This is not a valid choice!")
         main()
     else:
-        if start_play == "Y":
+        if start_play in expected:
             display_board()
             take_turn()
         else:
