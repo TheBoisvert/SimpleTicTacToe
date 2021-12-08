@@ -72,7 +72,7 @@ def take_turn():
         if board[move_line - 1][move_column - 1] != " ":
             print("You cannot play a move in a square that's already used!")
             continue
-        else :
+        else:
             break
 
     if turn == "1":
